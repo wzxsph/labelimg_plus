@@ -8,7 +8,7 @@ A customized version of [labelImg](https://github.com/tzutalin/labelImg) optimiz
 - **Auto-Zoom Preservation** - Automatically maintains the same zoom level when switching frames
 - **Scroll Position Memory** - Preserves scroll position between frames
 - **Box Labels Auto-Sorting** - Labels sorted by number (1, 2, 10 not 1, 10, 2)
-- **Frame Label Change Detection** - Shows +/– indicators for label changes between frames
+- **Frame Label Change Detection** - Shows +/- indicators for label changes between frames
 
 ### Quick Label Operations (Per-frame)
 - **Quick Copy** - Copy a labeled bounding box from previous frame to current frame
@@ -24,46 +24,40 @@ A customized version of [labelImg](https://github.com/tzutalin/labelImg) optimiz
 
 ### Requirements
 - Python 3.8+
+- [uv](https://github.com/astral-sh/uv) (recommended)
 - PyQt5
 - lxml
 
-### Installation
+### Installation with uv (Recommended)
 
-1. **Clone or download this project**
-
-2. **Create a virtual environment (recommended)**
+1. **Install uv** (if not already installed)
 ```bash
-cd C:\Users\ihao8\Desktop\maybe\rxdata_process
+# Windows PowerShell
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+# macOS / Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+2. **Create virtual environment and install dependencies**
+```bash
+uv venv .venv
+uv pip install PyQt5 lxml --python .venv\Scripts\python
+```
+
+3. **Run the application**
+```bash
+.venv\Scripts\activate
+python labelImg.py
+```
+
+### Installation with pip (Alternative)
+
+```bash
 python -m venv .venv
 .venv\Scripts\activate
-```
-
-3. **Install dependencies**
-```bash
 pip install PyQt5 lxml
-```
-
-4. **Run the application**
-```bash
-python labelImg_src/labelImg.py
-```
-
-Or use the virtual environment:
-```bash
-.venv\Scripts\activate
-python labelImg_src/labelImg.py
-```
-
-## Default Configuration
-
-On first launch, the application defaults to:
-- **Open Dir**: `C:\Users\ihao8\Desktop\maybe\rxdata_process\工作区\image`
-- **Save Dir**: `C:\Users\ihao8\Desktop\maybe\rxdata_process\工作区\xml`
-
-To change defaults, modify these constants in `labelImg.py`:
-```python
-DEFAULT_IMG_DIR = r"your\image\directory"
-DEFAULT_XML_DIR = r"your\xml\directory"
+python labelImg.py
 ```
 
 ## Usage Guide
@@ -80,7 +74,7 @@ Copies a labeled box from the previous frame to the current frame.
 1. Enter label number in "Copy:" input (e.g., `3`)
 2. Click **Set**
 3. Press **D** to go to next frame - the label will be auto-copied
-4. To cancel, click the **×** button
+4. To cancel, click the **x** button
 
 ### Quick Delete Label
 Automatically deletes a specified label when entering a new frame.
@@ -88,7 +82,7 @@ Automatically deletes a specified label when entering a new frame.
 1. Enter label number in "Delete:" input (e.g., `5`)
 2. Click **Set**
 3. Press **D** to go to next frame - the label will be auto-deleted
-4. To cancel, click the **×** button
+4. To cancel, click the **x** button
 
 ### Quick Replace Label
 Replaces all instances of one label number with another.
@@ -97,7 +91,7 @@ Replaces all instances of one label number with another.
 2. Enter target label in second box (e.g., `5`)
 3. Click **Set**
 4. Press **D** to go to next frame - all `3` labels become `5`
-5. To cancel, click the **×** button
+5. To cancel, click the **x** button
 
 ### Info Panel
 The bottom info panel shows:
@@ -108,20 +102,20 @@ The bottom info panel shows:
 ## Interface Layout
 
 ```
-┌─────────────────────────────────────────────────┐
-│ File List (Left)  │  Canvas (Center) │  Box Labels (Right) │
-│                   │                 │                    │
-│                   │                 │  [Edit] [Difficult] │
-│                   │                 │  [Combo Box]       │
-│                   │                 │  [Label List]      │
-│                   │                 │  [Frame Changes]    │
-│                   │                 │  ┌──────────────┐ │
-│                   │                 │  │ Copy: [ ] Set ×│ │
-│                   │                 │  │ Delete:[ ] Set ×│ │
-│                   │                 │  │ Replace:[]→[]Set×│ │
-│                   │                 │  │ Info: ...     │ │
-│                   │                 │  └──────────────┘ │
-└─────────────────────────────────────────────────┘
++-------------------------------------------------------------+
+| File List (Left)  |  Canvas (Center) |  Box Labels (Right)   |
+|                   |                  |                      |
+|                   |                  | [Edit] [Difficult]    |
+|                   |                  | [Combo Box]           |
+|                   |                  | [Label List]          |
+|                   |                  | [Frame Changes]       |
+|                   |                  | +---------------------+|
+|                   |                  | | Copy: [ ] Set x     ||
+|                   |                  | | Delete:[ ] Set x    ||
+|                   |                  | | Replace:[]->[]Set x ||
+|                   |                  | | Info: ...          ||
+|                   |                  | +---------------------+|
++-------------------------------------------------------------+
 ```
 
 ## Data Format
@@ -135,7 +129,7 @@ The bottom info panel shows:
 - Python 3.8+
 - PyQt5
 - lxml
-- labelImg libs (included in `.venv\Lib\site-packages\libs\`)
+- labelImg libs (from original labelImg package)
 
 ## Issues Fixed
 
@@ -143,3 +137,5 @@ The bottom info panel shows:
 - Empty directory crash
 - Label sorting object deletion error
 - Remove label KeyError for shapes not in dictionary
+- Empty label handling in load_labels
+- Integer type warnings in setValue calls
